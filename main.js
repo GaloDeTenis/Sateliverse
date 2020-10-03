@@ -12,7 +12,9 @@ Vue.config.ignoredElements = [
 	'a-entity',
 	'a-camera',
 	'a-cursor',
-	'a-box'
+	'a-box',
+	'a-asset-item',
+	'a-assets'
 ];
 
 Vue.use(VueAsyncComputed);

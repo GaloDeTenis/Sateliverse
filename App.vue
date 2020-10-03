@@ -4,11 +4,12 @@
 		<a-scene vr-mode-ui="enterVRButton: #vrButton">
 			<a-sky
 				:radius="radius"
-				src="https://cdn.eso.org/images/screen/vlt-mw-potw.jpg"
+				color="black"
 			></a-sky>
-			<Satellite @showInfo="showInfo" v-for="(satellite, s) in satelliteList" :key="s" :position="`${satellite.x} ${satellite.y} ${satellite.z}`" :name="satellite.name" :canEmit="true"></Satellite>
+			<a-circle color="blue" :radius="radius" position="0 0 0" rotation="-90 0 0"></a-circle>
+			<Satellite scale="50 50 50" @showInfo="showInfo" v-for="(satellite, s) in satelliteList" :key="s" :position="`${satellite.x} ${satellite.y} ${satellite.z}`" :name="satellite.name" :canEmit="true"></Satellite>
 			<a-camera>
-				<ShowSatellite @click="hideInfo" :text="info"></ShowSatellite>
+				<ShowSatellite @click="hideInfo" :text="info" scale="10 10 10"></ShowSatellite>
 				<a-cursor far="20000" color="#FFFFFF"></a-cursor>
 			</a-camera>
 		</a-scene>

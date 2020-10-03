@@ -6,7 +6,7 @@
 			:value="text"
 			position="0 -2 -4"
 		></a-text>
-        <Satellite @click="$emit('click')" position="0 0 -20" v-if="text"></Satellite>
+        <Satellite :scale="scale" @click="$emit('click')" position="0 0 -20" v-if="text"></Satellite>
 	</a-entity>
 </template>
 
@@ -18,6 +18,9 @@ export default {
 	},
 	props: {
 		text: {
+			type: String
+		},
+		scale: {
 			type: String
 		}
 	}

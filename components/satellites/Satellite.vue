@@ -1,11 +1,5 @@
 <template>
-	<a-sphere
-		ref="sphere"
-		satel
-		:position="position"
-		radius="5"
-		color="#FF0000"
-	></a-sphere>
+	<a-entity obj-model="obj: url(https://samuelnovaes.github.io/public/Satellite.obj)" ref="sphere" :position="position" color="#FF0000" :scale="scale"></a-entity>
 </template>
 
 <script>
@@ -24,6 +18,10 @@ export default {
 		canEmit: {
 			type: Boolean,
 			default: false
+		},
+		scale:{
+			type: String,
+			default: "1 1 1"
 		}
 	},
 	data() {
@@ -42,10 +40,13 @@ export default {
 				var el = this.el;
 
 				el.addEventListener('click', () => {
+					self.$emit('click')
+				});
+
+				el.addEventListener('mouseenter', () => {
 					if (self.canEmit) {
 						self.$emit('showInfo', self.name)
 					}
-					self.$emit('click')
 				});
 			}
 		});

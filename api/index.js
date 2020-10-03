@@ -58,7 +58,6 @@ export default {
 		});
 
 		return visibleSattelites.map(sattelite => {
-			console.log(sattelite.info.elevation, sattelite.info.azimuth);
 			return {
 				name: sattelite.tleArr[0],
 				...getXYZ(RADIUS, sattelite.info.elevation, sattelite.info.azimuth)
