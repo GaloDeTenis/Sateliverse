@@ -60,12 +60,6 @@ export default {
 						self.$emit('showInfo', { ...self.info, position: self.position })
 					}
 				});
-
-				el.addEventListener('mouseleave', () => {
-					if (self.canEmit) {
-						self.$emit('hideInfo')
-					}
-				});
 			}
 		});
 

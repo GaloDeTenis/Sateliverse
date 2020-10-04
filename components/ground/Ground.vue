@@ -8,6 +8,22 @@ export default {
 		radius: {
 			required: true
 		}
+	},
+	mounted(){
+		const self = this;
+		AFRAME.registerComponent('ground', {
+			schema: {
+				//color: { default: 'red' }
+			},
+
+			init: function () {
+				var el = this.el;
+
+				el.addEventListener('mouseenter', () => {
+					self.$emit('hideInfo')
+				});
+			}
+		});
 	}
 }
 </script>

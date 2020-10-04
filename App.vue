@@ -3,11 +3,10 @@
 	<div>
 		<a-scene vr-mode-ui="enterVRButton: #vrButton">
 			<a-sky :radius="`${radius + 100}`" src="https://live.staticflickr.com/8573/16015896214_41b3d29e17_b.jpg" crossorigin="anonymous"></a-sky>
-			<Ground :radius="radius"></Ground>
+			<Ground @hideInfo="hideInfo" :radius="radius"></Ground>
 			<Satellite
 				scale="20 20 20"
 				@showInfo="showInfo"
-				@hideInfo="hideInfo"
 				v-for="(sat, i) in satellites"
 				:key="i"
 				:position="`${sat.x} ${sat.y} ${sat.z}`"
