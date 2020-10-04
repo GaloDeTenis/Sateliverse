@@ -1,5 +1,12 @@
 <template>
-	<a-entity obj-model="obj: url(https://samuelnovaes.github.io/public/Satellite.obj)" ref="sphere" :position="position" color="#FF0000" :scale="scale"></a-entity>
+	<a-entity
+		obj-model="obj: url(models/Satellite.obj)"
+		ref="sphere"
+		:position="`${x} ${y} ${z}`"
+		color="#FF0000"
+		:scale="scale"
+		crossorigin="anonymous"
+	></a-entity>
 </template>
 
 <script>
@@ -10,26 +17,35 @@ export default {
 	props: {
 		position: {
 			type: String,
-			required: true
 		},
-		name: {
-			type: String
+		info: {
+			type: Object
 		},
 		canEmit: {
 			type: Boolean,
 			default: false
 		},
-		scale:{
+		scale: {
 			type: String,
 			default: "1 1 1"
 		}
 	},
 	data() {
 		return {
-			id: nanoid()
+			id: nanoid(),
+			x: 0,
+			y: 0,
+			z: 0
 		}
 	},
 	mounted() {
+		const p = this.position.split(/\s/g);
+		this.x = Number(p[0]);
+		this.y = p[1] == 'NaN' ? -200 : Number(p[1]);
+		this.z = Number(p[2]);
+
+		console.log(this.x, this.y, this.z)
+
 		const self = this;
 		AFRAME.registerComponent(this.id, {
 			schema: {
@@ -39,18 +55,28 @@ export default {
 			init: function () {
 				var el = this.el;
 
-				el.addEventListener('click', () => {
-					self.$emit('click')
-				});
-
 				el.addEventListener('mouseenter', () => {
 					if (self.canEmit) {
-						self.$emit('showInfo', self.name)
+						self.$emit('showInfo', { ...self.info, position: self.position })
+					}
+				});
+
+				el.addEventListener('mouseleave', () => {
+					if (self.canEmit) {
+						self.$emit('hideInfo')
 					}
 				});
 			}
 		});
-		this.$refs.sphere.setAttribute(this.id, null)
+
+		this.$refs.sphere.setAttribute(this.id, null);
+		if (this.canEmit) {
+			const vel = 0.05
+			setInterval(() => {
+				this.x += vel;
+				this.y -= vel;
+			}, 100);
+		}
 	}
 }
 </script>

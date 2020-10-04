@@ -1,7 +1,6 @@
 import 'aframe';
 import Vue from 'vue';
 import App from './App.vue';
-import VueAsyncComputed from 'vue-async-computed';
 
 
 Vue.config.ignoredElements = [
@@ -14,10 +13,9 @@ Vue.config.ignoredElements = [
 	'a-cursor',
 	'a-box',
 	'a-asset-item',
-	'a-assets'
+	'a-assets',
+	'a-circle'
 ];
-
-Vue.use(VueAsyncComputed);
 
 new Vue({
 	el: '#app',

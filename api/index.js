@@ -1,24 +1,29 @@
 
 import axios from 'axios';
-import sattelliteList from '../utils/data'
-import { getVisibleSatellites } from 'tle.js';
-import jspredict from 'jspredict';
+import sattelliteList from '../utils/data';
+import * as satellite from 'satellite.js';
+
+import { getSatelliteName, getVisibleSatellites, getClassification } from 'tle.js';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 
-function degrees_to_radians(degrees) {
-	var pi = Math.PI;
-	return degrees * (pi/180);
+function getPosition() {
+	return new Promise((resolve, reject) => {
+		if (navigator.geolocation) {
+			return navigator.geolocation.getCurrentPosition(position => {
+				resolve({
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				})
+			}, () => {
+				resolve({ lat: 0, lng: 0 });
+			});
+		}
+		else {
+			resolve({ lat: 0, lng: 0 });
+		}
+	})
 }
-
-const getXYZ = (radius, elevation, azimuth) => {
-	const x = radius * Math.sin(degrees_to_radians(elevation)) * Math.cos(degrees_to_radians(azimuth));
-	const y = radius * Math.sin(degrees_to_radians(elevation)) * Math.sin(degrees_to_radians(azimuth));
-	const z = radius * Math.cos(degrees_to_radians(elevation));
-	return {x, y, z};
-}
-
-const RADIUS = 500;
 
 export default {
     get(data){
@@ -44,25 +49,44 @@ export default {
 		// }
 		// return docs;
 
-		const lat = -15.7447213;
-		const lng = -48.1757154;
-		const height = 0;
+		const { lat, lng } = await getPosition();
+		const height = 500;
 
-		const visibleSattelites = getVisibleSatellites({
+		return getVisibleSatellites({
 			observerLat: lat,
 			observerLng: lng,
 			observerHeight: height,
 			tles: sattelliteList.map(sattelite => [sattelite.name, sattelite.line1, sattelite.line2]),
-			elevationThreshold: 70,
+			elevationThreshold: 75,
 			timestampMS: Date.now()
-		});
-
-		return visibleSattelites.map(sattelite => {
+		}).map((sat) => {
+			const date = new Date();
+			var satrec = satellite.twoline2satrec(sat.tleArr[1], sat.tleArr[2]);
+			var positionAndVelocity = satellite.propagate(satrec, date)
+			var positionEci = positionAndVelocity.position;
+			var observerGd = {
+				longitude: satellite.degreesToRadians(lat),
+				latitude: satellite.degreesToRadians(lng),
+				height
+			};
+			var gmst = satellite.gstime(date);
+			var positionEcf = satellite.eciToEcf(positionEci, gmst);
+			var observerEcf = satellite.geodeticToEcf(observerGd);
+			console.log(observerEcf);
+			const { x, y, z } = positionEcf;
 			return {
-				name: sattelite.tleArr[0],
-				...getXYZ(RADIUS, sattelite.info.elevation, sattelite.info.azimuth)
+				name: getSatelliteName(sat.tleArr),
+				classification: getClassification(sat.tleArr),
+				x, y, z
 			}
 		});
+
+
+		// .map(sattelite => ({
+		// 	name: sattelite.tleArr[0],
+		// 	phi: sattelite.info.azimuth,
+		// 	theta: sattelite.info.elevation
+		// }));
     },
     searchByName(name, data){
         return axios.get(`/${name}`, {params: data});
