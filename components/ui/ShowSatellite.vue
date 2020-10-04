@@ -5,7 +5,7 @@
 			align="center"
 			:value="info.name"
             color="black"
-			position="0 -1.5 -4"
+			:position="`0 ${-1.7 - top} -4`"
 			crossorigin="anonymous"
 		></a-text>
 		<a-text
@@ -13,10 +13,10 @@
 			align="center"
 			:value="info.type"
             color="black"
-			position="0 -2 -4"
+			:position="`0 ${-2 - top} -4`"
 			crossorigin="anonymous"
 		></a-text>
-        <!-- <a-plane v-show="text" color="white" height="2" width="5" position="0 -2.5 -5" rotation="0 0 0"></a-plane> -->
+        <a-plane color="white" height="1" width="5" :position="`0 ${-2.1 - top} -5`" rotation="0 0 0"></a-plane>
         <Satellite :scale="scale" position="0 1 -5"></Satellite>
 	</a-entity>
 </template>
@@ -30,7 +30,8 @@ export default {
 	data(){
 		return {
 			intervaler: null,
-			zRotate: 0
+			zRotate: 0,
+			top: -1
 		}
 		
 	},

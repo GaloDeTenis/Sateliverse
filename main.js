@@ -14,7 +14,8 @@ Vue.config.ignoredElements = [
 	'a-box',
 	'a-asset-item',
 	'a-assets',
-	'a-circle'
+	'a-circle',
+	'a-plane'
 ];
 
 new Vue({

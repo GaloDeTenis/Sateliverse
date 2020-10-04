@@ -2,7 +2,7 @@
 <template>
 	<div>
 		<a-scene vr-mode-ui="enterVRButton: #vrButton">
-			<a-sky :radius="`${radius + 10}`" src="https://live.staticflickr.com/8573/16015896214_41b3d29e17_b.jpg" crossorigin="anonymous"></a-sky>
+			<a-sky :radius="`${radius + 100}`" src="https://live.staticflickr.com/8573/16015896214_41b3d29e17_b.jpg" crossorigin="anonymous"></a-sky>
 			<Ground :radius="radius"></Ground>
 			<Satellite
 				scale="20 20 20"

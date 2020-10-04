@@ -74,7 +74,7 @@ export default {
 			const vel = 0.05
 			setInterval(() => {
 				this.x += vel;
-				this.y -= vel;
+				//this.z -= vel;
 			}, 100);
 		}
 	}
