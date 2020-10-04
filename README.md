@@ -25,7 +25,7 @@ The API SSC RESTFUL has been used to obtain the informations regarding the satel
 
 
 
-### How run the poject ?
+### How run the project ?
 
 Open the directory of project and execute in a terminal:
 ```bash
